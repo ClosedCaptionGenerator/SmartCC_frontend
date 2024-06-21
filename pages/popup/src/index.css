@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+:app-container {
+  /* --tw-bg-opacity: 1; */
+  --black: #000000;
+  --white: #ffffff;
+  --teal: #00adb5;
+  --bunker: #222831;
+  --gray: #d1d5db;
+  --light-gray: #eeeeee;
+
+  --primary: var(--teal);
+  --secondary: var(--bunker);
+  --background: var(--light-gray);
+
+  /* font */
+  --main-font: 'Roboto', sans-serif;
+
+  /* default */
+  font-family: var(--main-font), Arial, sans-serif;
+  font-size: 1.125rem; /* 18px */
+}
+
+body {
+  width: 450px;
+  height: 500px;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  position: relative;
+}
+
+/* code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+} */
