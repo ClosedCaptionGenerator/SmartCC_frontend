@@ -1,0 +1,14 @@
+{
+  "bgCC": {
+    "description": "Background music",
+    "message": "hi"
+  },
+  "extensionDescription": {
+    "description": "SmartCC, a closed-caption generator for YouTube videos",
+    "message": "Provides closed captions for YouTube videos, focusing on background music and sound effects"
+  },
+  "extensionName": {
+    "description": "SmartCC",
+    "message": "SmartCC Chrome extension for YouTube"
+  }
+}
