@@ -10,8 +10,9 @@
 
 ## To get started <a name="to_get_started"></a>
 
-1. Install pnpm `npm install -g pnpm`
-2. Run `pnpm install`
+1. Clone this repo
+2. Install pnpm `npm install -g pnpm`
+3. Run `pnpm install`
 
 ## For Chrome <a name="for_chrome"></a>
 
@@ -43,4 +44,3 @@
 ## Made from <a name="made_from"></a>
 
 - [chrome-extension-boilterplate-react-vite](https://github.com/Jonghakseo/chrome-extension-boilerplate-react-vite)
-
