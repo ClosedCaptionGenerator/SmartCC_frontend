@@ -40,15 +40,27 @@ const manifest = Object.assign({
   },
   content_scripts: [
     {
-      matches: ['http://*/*', 'https://*/*', '<all_urls>'],
+      matches: [
+        'https://www.youtube.com/watch*',
+        'https://www.youtube.com/embed/*',
+        'https://www.youtube-nocookie.com/embed/*',
+      ],
       js: ['content/index.iife.js'],
     },
     {
-      matches: ['http://*/*', 'https://*/*', '<all_urls>'],
+      matches: [
+        'https://www.youtube.com/watch*',
+        'https://www.youtube.com/embed/*',
+        'https://www.youtube-nocookie.com/embed/*',
+      ],
       js: ['content-ui/index.iife.js'],
     },
     {
-      matches: ['http://*/*', 'https://*/*', '<all_urls>'],
+      matches: [
+        'https://www.youtube.com/watch*',
+        'https://www.youtube.com/embed/*',
+        'https://www.youtube-nocookie.com/embed/*',
+      ],
       css: ['content.css'], // public folder
     },
   ],
