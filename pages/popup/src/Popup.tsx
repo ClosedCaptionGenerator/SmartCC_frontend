@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useStorageSuspense, withErrorBoundary, withSuspense } from '@chrome-extension-boilerplate/shared';
 import { exampleThemeStorage } from '@chrome-extension-boilerplate/storage';
+import { storage, saveSettings, loadSettings } from '@chrome-extension-boilerplate/storage/lib/settingStorage';
 
 const Popup = () => {
   const theme = useStorageSuspense(exampleThemeStorage);
@@ -19,6 +20,20 @@ const Popup = () => {
     setSpacing(0);
     setStroke(0);
     setSize(12);
+  };
+
+  const saveSettings = async () => {
+    await storage.set({
+      color,
+      background,
+      font,
+      spacing,
+      stroke,
+      size,
+    });
+
+    // const savedSettings = await storage.get();
+    // console.log('Saved Settings:', savedSettings);
   };
 
   return (
@@ -121,7 +136,9 @@ const Popup = () => {
             <button className="bg-slate-300 text-black py-1.5 px-3 rounded w-24" onClick={resetSettings}>
               Reset
             </button>
-            <button className="bg-teal-500 text-white py-1.5 px-3 rounded w-24">Save</button>
+            <button className="bg-teal-500 text-white py-1.5 px-3 rounded w-24" onClick={saveSettings}>
+              Save
+            </button>
           </div>
         </div>
       )}
