@@ -31,6 +31,8 @@ const Popup = () => {
       stroke,
       size,
     });
+    // const savedSettings = await storage.get();
+    // console.log('Saved Settings:', savedSettings);
   };
 
   return (
@@ -72,12 +74,12 @@ const Popup = () => {
               </select>
             </div>
             <div className="flex flex-col w-1/2 px-2">
-              <label className="text-gray-600">Spacing</label>
+              <label className="text-gray-600">Size</label>
               <input
                 type="number"
                 className="p-2 border rounded w-full h-8"
-                value={spacing}
-                onChange={e => setSpacing(Number(e.target.value))}
+                value={size}
+                onChange={e => setSize(Number(e.target.value))}
               />
             </div>
             <div className="flex flex-col w-1/2 px-2">
@@ -122,12 +124,12 @@ const Popup = () => {
               />
             </div>
             <div className="flex flex-col w-1/2 px-2">
-              <label className="text-gray-600">Size</label>
+              <label className="text-gray-600">Spacing</label>
               <input
                 type="number"
                 className="p-2 border rounded w-full h-8"
-                value={size}
-                onChange={e => setSize(Number(e.target.value))}
+                value={spacing}
+                onChange={e => setSpacing(Number(e.target.value))}
               />
             </div>
           </div>
