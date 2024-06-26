@@ -31,9 +31,6 @@ const Popup = () => {
       stroke,
       size,
     });
-
-    // const savedSettings = await storage.get();
-    // console.log('Saved Settings:', savedSettings);
   };
 
   return (
@@ -54,7 +51,9 @@ const Popup = () => {
             Generate AI-powered closed captions that emphasize background music and sound effects.
           </p>
           <div className="flex w-full justify-around mt-4 gap-1">
-            <button className="bg-slate-300 text-black py-1.5 px-3 rounded w-24">Cancel</button>
+            <button className="bg-slate-300 text-black py-1.5 px-3 rounded w-24" onClick={() => window.close()}>
+              Cancel
+            </button>
             <button className="bg-teal-500 text-white py-1.5 px-3 rounded w-24">Create</button>
           </div>
         </div>
