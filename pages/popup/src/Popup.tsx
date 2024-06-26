@@ -39,10 +39,10 @@ const Popup = () => {
     <div className="w-72 bg-gray-800 flex flex-col items-center">
       <div className="flex w-full items-center justify-start h-14 gap-4 px-2">
         <img className="w-10 h-10 rounded" src={chrome.runtime.getURL('popup/logo.png')} />
-        <button className="text-sm text-white px-2 py-1" id="home-btn" onClick={() => setActiveView('home')}>
+        <button className="text-sm text-white" id="home-btn" onClick={() => setActiveView('home')}>
           Home
         </button>
-        <button className="text-sm text-white px-2 py-1" id="options-btn" onClick={() => setActiveView('options')}>
+        <button className="text-sm text-white" id="options-btn" onClick={() => setActiveView('options')}>
           Options
         </button>
       </div>
