@@ -7,6 +7,19 @@ const Popup = () => {
   const [activeView, setActiveView] = useState('home');
   const [color, setColor] = useState('#FFFFFF');
   const [background, setBackground] = useState('#191919');
+  const [font, setFont] = useState('Arial');
+  const [spacing, setSpacing] = useState(0);
+  const [stroke, setStroke] = useState(0);
+  const [size, setSize] = useState(12);
+
+  const resetSettings = () => {
+    setColor('#FFFFFF');
+    setBackground('#191919');
+    setFont('Arial');
+    setSpacing(0);
+    setStroke(0);
+    setSize(12);
+  };
 
   return (
     <div className="w-72 bg-gray-800 flex flex-col items-center">
@@ -19,7 +32,7 @@ const Popup = () => {
           Options
         </button>
       </div>
-      {activeView === 'home' ? (
+      {activeView === 'home' && (
         <div className="w-full bg-slate-100 shadow-lg flex flex-col items-center justify-between p-4">
           <h2 className="w-full text-2xl font-bold text-center text-gray-800 mb-2">SmartCC</h2>
           <p className="w-full text-xs text-center mb-4">
@@ -30,20 +43,28 @@ const Popup = () => {
             <button className="bg-teal-500 text-white py-1.5 px-3 rounded w-24">Create</button>
           </div>
         </div>
-      ) : (
+      )}
+      {activeView === 'options' && (
         <div className="w-full bg-slate-100 p-4 shadow-lg flex flex-col items-center justify-between">
           <h2 className="w-full text-2xl font-bold text-center text-gray-800 mb-2">Subtitle Options</h2>
           <p className="w-full text-center mb-4">Customize your subtitles to match your preferences.</p>
           <div className="flex flex-wrap w-full mb-2">
             <div className="flex flex-col w-1/2 px-2">
               <label className="text-gray-600">Font</label>
-              <select className="p-2 border rounded w-full h-8">
+              <select value={font} onChange={e => setFont(e.target.value)} className="p-2 border rounded w-full h-8">
                 <option>Arial</option>
+                <option>Verdana</option>
+                <option>Helvetica</option>
               </select>
             </div>
             <div className="flex flex-col w-1/2 px-2">
               <label className="text-gray-600">Spacing</label>
-              <input type="number" className="p-2 border rounded w-full h-8" defaultValue="0" />
+              <input
+                type="number"
+                className="p-2 border rounded w-full h-8"
+                value={spacing}
+                onChange={e => setSpacing(Number(e.target.value))}
+              />
             </div>
             <div className="flex flex-col w-1/2 px-2">
               <label className="text-gray-600">Color</label>
@@ -79,15 +100,27 @@ const Popup = () => {
             </div>
             <div className="flex flex-col w-1/2 px-2">
               <label className="text-gray-600">Stroke</label>
-              <input type="number" className="p-2 border rounded w-full h-8" defaultValue="0" />
+              <input
+                type="number"
+                className="p-2 border rounded w-full h-8"
+                value={stroke}
+                onChange={e => setStroke(Number(e.target.value))}
+              />
             </div>
             <div className="flex flex-col w-1/2 px-2">
               <label className="text-gray-600">Size</label>
-              <input type="number" className="p-2 border rounded w-full h-8" defaultValue="12" />
+              <input
+                type="number"
+                className="p-2 border rounded w-full h-8"
+                value={size}
+                onChange={e => setSize(Number(e.target.value))}
+              />
             </div>
           </div>
           <div className="flex w-full justify-around mt-4 gap-1">
-            <button className="bg-slate-300 text-black py-1.5 px-3 rounded w-24">Reset</button>
+            <button className="bg-slate-300 text-black py-1.5 px-3 rounded w-24" onClick={resetSettings}>
+              Reset
+            </button>
             <button className="bg-teal-500 text-white py-1.5 px-3 rounded w-24">Save</button>
           </div>
         </div>
