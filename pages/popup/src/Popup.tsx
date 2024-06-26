@@ -1,10 +1,13 @@
+import React, { useState } from 'react';
 import { useStorageSuspense, withErrorBoundary, withSuspense } from '@chrome-extension-boilerplate/shared';
 import { exampleThemeStorage } from '@chrome-extension-boilerplate/storage';
-import React, { useState } from 'react';
 
 const Popup = () => {
   const theme = useStorageSuspense(exampleThemeStorage);
   const [activeView, setActiveView] = useState('home');
+  const [color, setColor] = useState('#FFFFFF');
+  const [background, setBackground] = useState('#191919');
+
   return (
     <div className="w-72 bg-gray-800 flex flex-col items-center">
       <div className="flex w-full items-center justify-start h-14 gap-4 px-2">
@@ -31,43 +34,56 @@ const Popup = () => {
         <div className="w-full bg-slate-100 p-4 shadow-lg flex flex-col items-center justify-between">
           <h2 className="w-full text-2xl font-bold text-center text-gray-800 mb-2">Subtitle Options</h2>
           <p className="w-full text-center mb-4">Customize your subtitles to match your preferences.</p>
-          <div className="flex flex-wrap justify-between w-full mb-2">
-            <div className="flex flex-col w-4/12 px-2">
+          <div className="flex flex-wrap w-full mb-2">
+            <div className="flex flex-col w-1/2 px-2">
               <label className="text-gray-600">Font</label>
-              <select className="p-2 border rounded w-full">
+              <select className="p-2 border rounded w-full h-8">
                 <option>Arial</option>
               </select>
             </div>
-            <div className="flex flex-col w-4/12 px-2">
+            <div className="flex flex-col w-1/2 px-2">
               <label className="text-gray-600">Spacing</label>
-              <input type="number" className="p-2 border rounded w-full" defaultValue="0" />
+              <input type="number" className="p-2 border rounded w-full h-8" defaultValue="0" />
             </div>
-
-            <div className="flex flex-col w-1/3 px-2">
+            <div className="flex flex-col w-1/2 px-2">
               <label className="text-gray-600">Color</label>
-              <input
-                type="color"
-                className="form-input p-2 border rounded w-full h-10"
-                style={{ backgroundColor: 'transparent' }}
-                defaultValue="#FFFFFF"
-              />
+              <div className="relative border rounded h-8 w-full bg-white flex items-center cursor-pointer">
+                <input
+                  type="color"
+                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                  value={color}
+                  onChange={e => setColor(e.target.value)}
+                  style={{ padding: '0', margin: '0' }}
+                />
+                <div className="flex items-center pl-2 bg-white flex-grow">
+                  <div className="w-5 h-5 border" style={{ backgroundColor: color }}></div>
+                  <span className="text-gray-800 ml-2">{color.toUpperCase()}</span>
+                </div>
+              </div>
             </div>
-            <div className="flex flex-col w-4/12 px-2">
-              <label className="text-gray-600">Size</label>
-              <input type="number" className="p-2 border rounded w-full" defaultValue="12" />
-            </div>
-            <div className="flex flex-col w-4/12 px-2">
-              <label className="text-gray-600">Stroke</label>
-              <input type="number" className="p-2 border rounded w-full" defaultValue="0" />
-            </div>
-            <div className="flex flex-col w-1/3 px-2">
+            <div className="flex flex-col w-1/2 px-2">
               <label className="text-gray-600">Background</label>
-              <input
-                type="color"
-                className="form-input p-2 border rounded w-full h-10"
-                style={{ backgroundColor: 'transparent' }}
-                defaultValue="#191919"
-              />
+              <div className="relative border rounded h-8 w-full bg-white flex items-center cursor-pointer">
+                <input
+                  type="color"
+                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                  value={background}
+                  onChange={e => setBackground(e.target.value)}
+                  style={{ padding: '0', margin: '0' }}
+                />
+                <div className="flex items-center pl-2 bg-white flex-grow">
+                  <div className="w-5 h-5 border" style={{ backgroundColor: background }}></div>
+                  <span className="text-gray-800 ml-2">{background.toUpperCase()}</span>
+                </div>
+              </div>
+            </div>
+            <div className="flex flex-col w-1/2 px-2">
+              <label className="text-gray-600">Stroke</label>
+              <input type="number" className="p-2 border rounded w-full h-8" defaultValue="0" />
+            </div>
+            <div className="flex flex-col w-1/2 px-2">
+              <label className="text-gray-600">Size</label>
+              <input type="number" className="p-2 border rounded w-full h-8" defaultValue="12" />
             </div>
           </div>
           <div className="flex w-full justify-around mt-4 gap-1">
