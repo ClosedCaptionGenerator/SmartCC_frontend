@@ -1,91 +1,48 @@
-import { getPlayerElement, getSettingsMenuElements, insertMenuItem } from './utils';
+import React, { useEffect } from 'react';
+import { handlePlayerSettings } from '@src/player/settingsMenu';
+import useSubtitles from '@src/hooks/useSubtitles';
 
-const App = () => {
-  const handleSubtitleSettings = ({ bgCC, position }, isEmbedded: boolean) => {
-    // Select the appropriate player
-    const playerElement = getPlayerElement(isEmbedded);
+const App: React.FC = () => {
+  const subtitles = useSubtitles();
 
-    // Select menu elements within the player
-    const { settingsMenu, panelMenu, settingsButton } = getSettingsMenuElements(playerElement);
-    const getMessage = chrome.i18n.getMessage;
-
-    // Stop event propagation for the settings menu
-    settingsMenu.addEventListener('click', event => event.stopPropagation());
-
-    // Insert custom menu items into the settings panel
-    insertMenuItem(panelMenu, bgCC, getMessage('bgCC'));
-
-    // Add event listener to toggle bgCC mode
-    const bgCCButton = panelMenu.querySelector('#bgCC-button') as HTMLElement;
-    bgCCButton.addEventListener('click', () => {
-      bgCC = !bgCC;
-      bgCCButton.setAttribute('aria-checked', `${bgCC}`);
-      chrome.storage.sync.set({ bgCC });
-      window.postMessage({
-        source: 'ext',
-        type: 'restartSubtitles',
-        text: bgCC,
-      });
-    });
-
-    // Function to update settings menu based on the current state
-    const updateSettingsMenu = ({
-      playerElement,
-      panelMenu,
-    }: {
-      playerElement: HTMLElement;
-      panelMenu: HTMLElement;
-    }) => {
-      const adsOverlay = playerElement.querySelector('.video-ads.ytp-ad-module .ytp-ad-player-overlay') as HTMLElement;
-      const subtitlesButton = playerElement.querySelector('.ytp-subtitles-button') as HTMLElement;
-      const subtitlesButtonPressed = subtitlesButton.hasAttribute('aria-pressed') as boolean;
-
-      if (subtitlesButtonPressed && !adsOverlay) {
-        chrome.storage.sync.get(['bgCC'], ({ bgCC }) => {
-          ['#bgCC-button'].forEach(selector => {
-            const selected = panelMenu.querySelector(selector) as HTMLElement;
-            selected.style.removeProperty('display');
-          });
-          const bgCCButton = panelMenu.querySelector('#bgCC-button') as HTMLElement;
-          bgCCButton.setAttribute('aria-checked', bgCC);
-        });
-      } else {
-        ['#bgCC-button'].forEach(selector => {
-          const selected = panelMenu.querySelector(selector) as HTMLElement;
-          selected.style.setProperty('display', 'none');
-        });
-      }
-    };
-
-    // Add event listener to settings button for menu updates
-    settingsButton.addEventListener('mouseenter', () => {
-      updateSettingsMenu({
-        playerElement,
-        panelMenu,
-      });
-    });
-  };
-
-  // Get stored settings and initialize the script
-  chrome.storage.sync.get(['bgCC', 'position'], settings => {
-    window.openSubtitle = settings.openSubtitle;
-    if (window.location.pathname.includes('/embed/')) {
-      if (new URLSearchParams(window.location.search).get('controls') !== '0') {
-        handleSubtitleSettings(settings, true);
-      }
-    } else {
-      const initInterval = setInterval(() => {
-        if (document.querySelector('#ytd-player .ytp-settings-menu .ytp-panel .ytp-panel-menu')) {
-          clearInterval(initInterval);
-          handleSubtitleSettings(settings, false);
+  useEffect(() => {
+    chrome.storage.sync.get(['bgCC', 'position'], settings => {
+      window.openSubtitle = settings.openSubtitle;
+      if (window.location.pathname.includes('/embed/')) {
+        if (new URLSearchParams(window.location.search).get('controls') !== '0') {
+          handlePlayerSettings(settings, true);
         }
-      }, 500);
-    }
-  });
+      } else {
+        const initInterval = setInterval(() => {
+          if (document.querySelector('#ytd-player .ytp-settings-menu .ytp-panel .ytp-panel-menu')) {
+            clearInterval(initInterval);
+            handlePlayerSettings(settings, false);
+          }
+        }, 500);
+      }
+    });
+  }, []);
 
-  /*
-   * Subtitle
-   */
+  useEffect(() => {
+    const captionContainer = document.querySelector('.ytp-caption-window-container');
+
+    if (captionContainer && subtitles) {
+      subtitles.events.forEach(event => {
+        setTimeout(() => {
+          const captionElement = document.createElement('div');
+          captionElement.className = 'ytp-caption-segment';
+          captionElement.style.cssText =
+            'display: inline-block; white-space: pre-wrap; background: rgba(8, 8, 8, 0.75); font-size: 14.65px; color: rgb(255, 255, 255); fill: rgb(255, 255, 255); font-family: "YouTube Noto", Roboto, "Arial Unicode Ms", Arial, Helvetica, Verdana, "PT Sans Caption", sans-serif;';
+          captionElement.innerText = event.segs.map(seg => seg.utf8).join('\n');
+          captionContainer.appendChild(captionElement);
+
+          setTimeout(() => {
+            captionContainer.removeChild(captionElement);
+          }, event.dDurationMs);
+        }, event.tStartMs);
+      });
+    }
+  }, [subtitles]);
 
   return null;
 };
