@@ -1,7 +1,7 @@
 {
   "bgCC": {
     "description": "CC for Background music and Sound Effects",
-    "message": "SmartCC"
+    "message": "CC for Background Sound"
   },
   "extensionDescription": {
     "description": "SmartCC, a closed-caption generator for YouTube videos",
