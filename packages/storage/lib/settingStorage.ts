@@ -1,6 +1,6 @@
 import { BaseStorage, createStorage, StorageType } from './base';
 
-interface SubtitleSettings {
+interface SubtitleSetting {
   color: string;
   background: string;
   font: string;
@@ -9,28 +9,37 @@ interface SubtitleSettings {
   size: number;
 }
 
-const storageKey = 'subtitle-settings';
-
-export const storage = createStorage<SubtitleSettings>(
-  storageKey,
-  {
-    color: '#FFFFFF',
-    background: '#191919',
-    font: 'Arial',
-    spacing: 0,
-    stroke: 0,
-    size: 12,
-  },
-  {
-    storageType: StorageType.Local,
-    liveUpdate: true,
-  },
-);
-
-export const saveSettings = async (settings: SubtitleSettings) => {
-  await storage.set(settings);
+const defaultSubtitleSetting: SubtitleSetting = {
+  color: '#FFFFFF',
+  background: '#191919',
+  font: 'Arial',
+  spacing: 0,
+  stroke: 0,
+  size: 12,
 };
 
-export const loadSettings = async (): Promise<SubtitleSettings> => {
-  return storage.get();
+type SubtitleSettingStorage = BaseStorage<SubtitleSetting> & {
+  saveSettings: (settings: SubtitleSetting) => Promise<void>;
+  loadSettings: () => Promise<SubtitleSetting>;
+  resetSettings: () => Promise<void>;
+};
+
+const storageKey = 'subtitle-settings';
+
+const storage = createStorage<SubtitleSetting>(storageKey, defaultSubtitleSetting, {
+  storageType: StorageType.Sync,
+  liveUpdate: true,
+});
+
+export const subtitleSettingStorage: SubtitleSettingStorage = {
+  ...storage,
+  saveSettings: async (settings: SubtitleSetting) => {
+    await storage.set(settings);
+  },
+  loadSettings: async () => {
+    return storage.get();
+  },
+  resetSettings: async () => {
+    await storage.set(defaultSubtitleSetting);
+  },
 };
